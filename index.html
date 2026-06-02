@@ -1,9 +1,10 @@
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>✨ Galactic Birthday Wonderland | Cosmic Love ✨</title>
+    <title>✨ Galactic Birthday | Solar System of Love ✨</title>
     <style>
         body {
             margin: 0;
@@ -224,12 +225,13 @@
     
     <div class="controls">
         <button id="popConfettiBtn">🎉 Sprinkle Magic 🎉</button>
-        <button id="rotatePlanetsBtn">🌀 Galactic Dance 🌠</button>
+        <button id="rotatePlanetsBtn">🌀 Pause Galaxy Dance 🌠</button>
         <button id="romanticMsgBtn">💌 Cosmic Love Letter 💌</button>
         <button id="twinkleStarsBtn">✨ Starfall Kiss ✨</button>
+        <button id="resetViewBtn">🔭 Reset View</button>
     </div>
     <div class="instruction">
-        🖱️ Drag to explore | 🌕 The Moon of Love | 🪐 Planets of Devotion
+        🖱️ Drag to explore solar system | 🌕 Central Moon | 🪐 Planets of Love
     </div>
     <canvas id="confetti-canvas"></canvas>
 
@@ -248,13 +250,13 @@
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 
-        // --- setup scene with dreamy cosmic background ---
+        // --- setup scene with deep cosmic background ---
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x030318);
-        scene.fog = new THREE.FogExp2(0x030318, 0.0004);
+        scene.fog = new THREE.FogExp2(0x030318, 0.00035);
 
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(8, 5, 15);
+        camera.position.set(9, 6, 16);
         camera.lookAt(0, 0, 0);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -280,66 +282,79 @@
         controls.enablePan = true;
         controls.zoomSpeed = 1.3;
         controls.rotateSpeed = 0.9;
+        controls.target.set(0, 0.5, 0);
         
-        // --- magical lighting ---
-        const ambientLight = new THREE.AmbientLight(0x221c3a);
+        // Reset view button functionality
+        document.getElementById('resetViewBtn').addEventListener('click', () => {
+            camera.position.set(9, 6, 16);
+            controls.target.set(0, 0.5, 0);
+            controls.update();
+        });
+        
+        // --- magical lighting (enhanced visibility) ---
+        const ambientLight = new THREE.AmbientLight(0x1a1a2e);
         scene.add(ambientLight);
-        const sunLight = new THREE.DirectionalLight(0xffeedd, 1.4);
-        sunLight.position.set(8, 12, 6);
+        const sunLight = new THREE.DirectionalLight(0xffeedd, 1.5);
+        sunLight.position.set(10, 15, 8);
         sunLight.castShadow = true;
         sunLight.receiveShadow = true;
         sunLight.shadow.mapSize.width = 1024;
         sunLight.shadow.mapSize.height = 1024;
         scene.add(sunLight);
         
-        const backLight = new THREE.PointLight(0x7a4d8c, 0.7);
-        backLight.position.set(-4, 3, -8);
+        const backLight = new THREE.PointLight(0x8a6cbf, 0.7);
+        backLight.position.set(-5, 4, -9);
         scene.add(backLight);
         
-        const warmFill = new THREE.PointLight(0xff9f7a, 0.8);
-        warmFill.position.set(3, 2, 4);
+        const warmFill = new THREE.PointLight(0xff9f7a, 0.85);
+        warmFill.position.set(4, 3, 5);
         scene.add(warmFill);
         
         const fairyGlow = new THREE.PointLight(0xffaa99, 1.0);
-        fairyGlow.position.set(1, 1.5, 2);
+        fairyGlow.position.set(1.5, 2, 2.5);
         scene.add(fairyGlow);
+        
+        // Helper: subtle colored point lights around planets for extra pop
+        const colorFillLight = new THREE.PointLight(0xff88aa, 0.5);
+        colorFillLight.position.set(2, 1, 3);
+        scene.add(colorFillLight);
         
         // --- massive starfield (distant stars) ---
         const starGeometry = new THREE.BufferGeometry();
-        const starCount = 2800;
+        const starCount = 3500;
         const starPositions = new Float32Array(starCount * 3);
         for (let i = 0; i < starCount; i++) {
-            starPositions[i*3] = (Math.random() - 0.5) * 500;
-            starPositions[i*3+1] = (Math.random() - 0.5) * 280;
-            starPositions[i*3+2] = (Math.random() - 0.5) * 140 - 60;
+            starPositions[i*3] = (Math.random() - 0.5) * 550;
+            starPositions[i*3+1] = (Math.random() - 0.5) * 300;
+            starPositions[i*3+2] = (Math.random() - 0.5) * 160 - 70;
         }
         starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
         const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.16, transparent: true, opacity: 0.85 });
         const stars = new THREE.Points(starGeometry, starMaterial);
         scene.add(stars);
         
-        // --- LOVELY MOON (romantic core) without treehouse but with glowing heart aura---
-        const moonGeometry = new THREE.SphereGeometry(1.75, 160, 160);
+        // --- CENTERPIECE: Lovely Moon (no tree, pure romantic core)---
+        const moonGeometry = new THREE.SphereGeometry(1.8, 180, 180);
         const moonMaterial = new THREE.MeshStandardMaterial({
             color: 0xfdebc2,
             emissive: 0x552200,
-            emissiveIntensity: 0.38,
+            emissiveIntensity: 0.35,
             roughness: 0.55,
-            metalness: 0.15
+            metalness: 0.12
         });
         const moon = new THREE.Mesh(moonGeometry, moonMaterial);
         moon.castShadow = true;
         moon.receiveShadow = false;
-        moon.position.set(0, -0.3, 0);
+        moon.position.set(0, -0.2, 0);
         scene.add(moon);
         
-        // Moon craters for realism
+        // Moon craters for texture
         const craterMat = new THREE.MeshStandardMaterial({ color: 0xccaa7c, roughness: 0.85 });
-        for (let i = 0; i < 140; i++) {
+        for (let i = 0; i < 160; i++) {
             const crater = new THREE.Mesh(new THREE.SphereGeometry(0.06 + Math.random()*0.12, 16), craterMat);
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos(2 * Math.random() - 1);
-            const r = 1.78;
+            const r = 1.82;
             crater.position.x = r * Math.sin(phi) * Math.cos(theta);
             crater.position.y = r * Math.sin(phi) * Math.sin(theta);
             crater.position.z = r * Math.cos(phi);
@@ -347,89 +362,100 @@
             moon.add(crater);
         }
         
-        // Add glowing floating hearts around the moon
+        // Glowing hearts orbiting the moon
         const heartGroup = new THREE.Group();
-        const heartMat = new THREE.MeshStandardMaterial({ color: 0xff6b8e, emissive: 0xff3366, emissiveIntensity: 0.7 });
-        for (let i = 0; i < 28; i++) {
-            const heart = new THREE.Mesh(new THREE.SphereGeometry(0.09, 8), heartMat);
-            heart.userData = { angle: (i / 28) * Math.PI * 2, radius: 2.1, yOffset: Math.sin(i) * 0.5 };
-            heartGroup.add(heart);
+        const heartMat = new THREE.MeshStandardMaterial({ color: 0xff6b8e, emissive: 0xff3366, emissiveIntensity: 0.8 });
+        for (let i = 0; i < 32; i++) {
+            const heartOrb = new THREE.Mesh(new THREE.SphereGeometry(0.09, 8), heartMat);
+            heartOrb.userData = { angle: (i / 32) * Math.PI * 2, radius: 2.2, yOffset: Math.sin(i) * 0.4 };
+            heartGroup.add(heartOrb);
         }
         moon.add(heartGroup);
         
-        // moon halo
+        // moon halo (soft glow)
         const haloMat = new THREE.MeshPhongMaterial({ color: 0xffccaa, transparent: true, opacity: 0.2, side: THREE.BackSide });
-        const halo = new THREE.Mesh(new THREE.SphereGeometry(2.05, 48, 48), haloMat);
+        const halo = new THREE.Mesh(new THREE.SphereGeometry(2.1, 48, 48), haloMat);
         moon.add(halo);
         
-        // --- Dreamy Planets System (Romantic Names)---
+        // --- Solar System Planets (fully visible, vibrant, with rings and labels)---
         const planetsGroup = new THREE.Group();
         scene.add(planetsGroup);
         
         const planetsData = [
-            { name: "💗 Heartbloom", radius: 0.32, distance: 3.2, color: 0xff7799, speed: 0.0095, emissive: 0xaa4477 },
-            { name: "✨ Wishfall", radius: 0.27, distance: 4.5, color: 0xb8dbff, speed: 0.0065, emissive: 0x5588aa },
-            { name: "🌹 Rosette", radius: 0.36, distance: 5.9, color: 0xffaa88, speed: 0.005, emissive: 0xcc6644 },
-            { name: "☀️ Soluna", radius: 0.44, distance: 7.4, color: 0xffcf9a, speed: 0.0038, emissive: 0xdd8844 },
-            { name: "🌙 Lullamoon", radius: 0.28, distance: 8.9, color: 0xdccfaa, speed: 0.0029, emissive: 0x997755 }
+            { name: "💗 Heartbloom", radius: 0.34, distance: 3.3, color: 0xff7799, speed: 0.0092, emissive: 0xaa4477, ring: false },
+            { name: "✨ Wishfall", radius: 0.29, distance: 4.7, color: 0xb8dbff, speed: 0.0068, emissive: 0x5588aa, ring: true },
+            { name: "🌹 Rosette", radius: 0.38, distance: 6.1, color: 0xffaa88, speed: 0.0052, emissive: 0xcc6644, ring: false },
+            { name: "☀️ Soluna", radius: 0.46, distance: 7.6, color: 0xffcf9a, speed: 0.004, emissive: 0xdd8844, ring: true },
+            { name: "🌙 Lullamoon", radius: 0.3, distance: 9.2, color: 0xdccfaa, speed: 0.0031, emissive: 0x997755, ring: false }
         ];
         
         const planets = [];
         planetsData.forEach((data) => {
-            const geometry = new THREE.SphereGeometry(data.radius, 96, 96);
-            const material = new THREE.MeshStandardMaterial({ color: data.color, emissive: data.emissive, emissiveIntensity: 0.28, roughness: 0.35, metalness: 0.2 });
+            const geometry = new THREE.SphereGeometry(data.radius, 128, 128);
+            const material = new THREE.MeshStandardMaterial({ color: data.color, emissive: data.emissive, emissiveIntensity: 0.32, roughness: 0.38, metalness: 0.2 });
             const planet = new THREE.Mesh(geometry, material);
             planet.castShadow = true;
             planet.userData = { angle: Math.random() * Math.PI * 2, distance: data.distance, speed: data.speed };
             planetsGroup.add(planet);
             
-            // Add rings for some planets
-            if (data.name === "✨ Wishfall" || data.name === "☀️ Soluna") {
-                const ringGeo = new THREE.TorusGeometry(data.radius + 0.1, 0.07, 64, 200);
-                const ringMat = new THREE.MeshStandardMaterial({ color: 0xffddbb, emissive: 0xcc9966 });
+            // Add rings for specified planets
+            if (data.ring) {
+                const ringGeo = new THREE.TorusGeometry(data.radius + 0.12, 0.08, 64, 200);
+                const ringMat = new THREE.MeshStandardMaterial({ color: 0xffddbb, emissive: 0xcc9966, emissiveIntensity: 0.3 });
                 const ring = new THREE.Mesh(ringGeo, ringMat);
                 ring.rotation.x = Math.PI / 2.2;
+                ring.rotation.z = 0.3;
                 planet.add(ring);
             }
             
-            // Cute CSS2D label
+            // CSS2D Label for each planet
             const div = document.createElement('div');
             div.textContent = `${data.name}`;
             div.style.color = '#fff5e6';
-            div.style.fontSize = 'clamp(9px, 3vw, 14px)';
+            div.style.fontSize = 'clamp(10px, 3vw, 15px)';
             div.style.fontWeight = 'bold';
-            div.style.textShadow = '0 0 10px #ff88aa';
-            div.style.background = 'rgba(0,0,0,0.65)';
-            div.style.padding = '3px 12px';
+            div.style.textShadow = '0 0 12px #ff88aa';
+            div.style.background = 'rgba(0,0,0,0.7)';
+            div.style.padding = '3px 14px';
             div.style.borderRadius = '40px';
-            div.style.backdropFilter = 'blur(5px)';
+            div.style.backdropFilter = 'blur(6px)';
             div.style.border = '1px solid rgba(255,190,120,0.9)';
             div.style.fontFamily = "'Poppins', sans-serif";
+            div.style.whiteSpace = 'nowrap';
             const label = new CSS2DObject(div);
             planet.add(label);
-            label.position.set(0, data.radius + 0.26, 0);
+            label.position.set(0, data.radius + 0.28, 0);
             planets.push(planet);
         });
         
-        // --- orbiting sparkle dust (romantic particles)---
-        const dustCount = 1200;
+        // --- Orbiting heart particles (extra romance)---
+        const orbitingHearts = [];
+        for (let i = 0; i < 70; i++) {
+            const orbHeart = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8), new THREE.MeshStandardMaterial({ color: 0xff88aa, emissive: 0xff4477, emissiveIntensity: 0.6 }));
+            orbHeart.userData = { angle: (i / 70) * Math.PI * 2, radius: 3.0, speed: 0.0075 };
+            scene.add(orbHeart);
+            orbitingHearts.push(orbHeart);
+        }
+        
+        // --- Sparkle dust particles (floating cosmic dust)---
+        const dustCount = 1400;
         const dustGeometry = new THREE.BufferGeometry();
         const dustPositions = new Float32Array(dustCount * 3);
         for (let i = 0; i < dustCount; i++) {
-            dustPositions[i*3] = (Math.random() - 0.5) * 12;
-            dustPositions[i*3+1] = (Math.random() - 0.5) * 7;
-            dustPositions[i*3+2] = (Math.random() - 0.5) * 12;
+            dustPositions[i*3] = (Math.random() - 0.5) * 15;
+            dustPositions[i*3+1] = (Math.random() - 0.5) * 8;
+            dustPositions[i*3+2] = (Math.random() - 0.5) * 15;
         }
         dustGeometry.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
         const dustMat = new THREE.PointsMaterial({ color: 0xffbbaa, size: 0.05, transparent: true, blending: THREE.AdditiveBlending });
         const dustParticles = new THREE.Points(dustGeometry, dustMat);
         scene.add(dustParticles);
         
-        // glowing orbital ring (mystical)
-        const orbitRadius = 9.9;
+        // --- Orbital ring ( decorative visible orbit line )---
+        const orbitRadiusOuter = 9.6;
         const orbitPoints = [];
-        const orbitCurve = new THREE.EllipseCurve(0, 0, orbitRadius, orbitRadius, 0, 2 * Math.PI, false, 0);
-        const orbitDivisions = 220;
+        const orbitCurve = new THREE.EllipseCurve(0, 0, orbitRadiusOuter, orbitRadiusOuter, 0, 2 * Math.PI, false, 0);
+        const orbitDivisions = 240;
         const orbitGeo = new THREE.BufferGeometry();
         const vertices = [];
         for (let i = 0; i <= orbitDivisions; i++) {
@@ -441,31 +467,21 @@
         const orbitRing = new THREE.LineLoop(orbitGeo, orbitMatLine);
         scene.add(orbitRing);
         
-        // additional star sparkles floating around
-        const sparkleGroup = new THREE.Group();
-        const sparkleMat = new THREE.PointsMaterial({ color: 0xffdd99, size: 0.045, blending: THREE.AdditiveBlending });
-        const sparkleCount = 800;
+        // extra glowing star sparkles
+        const sparkleCount = 1000;
         const sparklePositions = new Float32Array(sparkleCount * 3);
         for (let i = 0; i < sparkleCount; i++) {
-            sparklePositions[i*3] = (Math.random() - 0.5) * 20;
-            sparklePositions[i*3+1] = (Math.random() - 0.5) * 10;
-            sparklePositions[i*3+2] = (Math.random() - 0.5) * 15;
+            sparklePositions[i*3] = (Math.random() - 0.5) * 22;
+            sparklePositions[i*3+1] = (Math.random() - 0.5) * 12;
+            sparklePositions[i*3+2] = (Math.random() - 0.5) * 18;
         }
         const sparkleGeo = new THREE.BufferGeometry();
         sparkleGeo.setAttribute('position', new THREE.BufferAttribute(sparklePositions, 3));
-        const sparklePoints = new THREE.Points(sparkleGeo, sparkleMat);
+        const sparkleMatPoints = new THREE.PointsMaterial({ color: 0xffdd99, size: 0.045, blending: THREE.AdditiveBlending });
+        const sparklePoints = new THREE.Points(sparkleGeo, sparkleMatPoints);
         scene.add(sparklePoints);
         
-        // --- Heart orbiting particles around center
-        const orbitingHearts = [];
-        for (let i = 0; i < 60; i++) {
-            const orbHeart = new THREE.Mesh(new THREE.SphereGeometry(0.07, 6), new THREE.MeshStandardMaterial({ color: 0xff88aa, emissive: 0xff4477, emissiveIntensity: 0.5 }));
-            orbHeart.userData = { angle: (i / 60) * Math.PI * 2, radius: 2.8, speed: 0.008 };
-            scene.add(orbHeart);
-            orbitingHearts.push(orbHeart);
-        }
-        
-        // --- Confetti System (Canvas based, magical)
+        // --- Confetti System (Canvas based)---
         const confettiCanvas = document.getElementById('confetti-canvas');
         let ctx = confettiCanvas.getContext('2d');
         let particlesArray = [];
@@ -479,541 +495,184 @@
         resizeConfettiCanvas();
         
         function createConfetti() {
-            const colors = ['#ff6b8e', '#ffb347', '#ff88cc', '#aaffdd', '#ffd966', '#ff99cc'];
-            for (let i = 0; i < 180; i++) {
+            const colors = ['#ff6b8e', '#ffb347', '#ff88cc', '#aaffdd', '#ffd966', '#ff99cc', '#ffa07a'];
+            for (let i = 0; i < 200; i++) {
                 particlesArray.push({
-                    x: Math.random()             pointer-events: none;
-            font-family: monospace;
-        }
-
-        /* Confetti canvas layer */
-        #confetti-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 25;
-        }
-
-        /* Custom photo frame floating - responsive image popup */
-        .photo-memory {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 30;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            animation: gentleHover 2s infinite ease-in-out;
-        }
-
-        .photo-frame {
-            background: rgba(255,215,180,0.85);
-            backdrop-filter: blur(8px);
-            border-radius: 20px;
-            padding: 6px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3), 0 0 0 3px rgba(255,200,150,0.6);
-            transition: transform 0.3s;
-        }
-
-        .photo-frame img {
-            width: clamp(60px, 15vw, 100px);
-            height: auto;
-            border-radius: 15px;
-            display: block;
-            object-fit: cover;
-            aspect-ratio: 1/1;
-            border: 2px solid #ffddbb;
-        }
-
-        .photo-frame:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 0 3px #ffaa77;
-        }
-
-        @keyframes gentleHover {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* Floating Birthday Note */
-        .floating-note {
-            position: absolute;
-            top: 20%;
-            left: 20px;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(10px);
-            padding: 12px 18px;
-            border-radius: 20px;
-            max-width: 220px;
-            border-left: 5px solid #ff88aa;
-            color: #fff0cc;
-            font-size: clamp(0.7rem, 2.5vw, 0.9rem);
-            font-weight: 500;
-            pointer-events: none;
-            z-index: 20;
-            animation: fadeSlide 1s ease-out;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        @keyframes fadeSlide {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        @media (max-width: 600px) {
-            .controls { gap: 6px; padding: 8px 12px; bottom: 12px; right: 12px; }
-            button { padding: 5px 12px; }
-            .floating-note { top: auto; bottom: 80px; left: 12px; max-width: 170px; font-size: 0.7rem; padding: 8px 12px; }
-            .photo-memory { top: 12px; right: 12px; }
-        }
-    </style>
-</head>
-<body>
-    <div class="birthday-message">
-        <h1>🎂 Happy Birthday, My Universe 🎂</h1>
-        <p>🌕 You make my world magical ✨</p>
-    </div>
-    
-    <!-- Image Frame with relative path "Media.jpg" -->
-    <div class="photo-memory" id="photoTrigger">
-        <div class="photo-frame">
-            <img src="Media.jpg" alt="My Love's Memory" onerror="this.src='https://via.placeholder.com/100?text=❤️+Love+❤️'">
-        </div>
-    </div>
-    
-    <div class="floating-note" id="floatingNote">
-        💖 To my starlight: Every moment with you is a cosmic adventure!  
-        Click on the image for a sweet surprise 🌹
-    </div>
-    
-    <div class="controls">
-        <button id="popConfettiBtn">🎉 Sprinkle Magic 🎉</button>
-        <button id="rotatePlanetsBtn">🌀 Galaxy Spin 🌠</button>
-        <button id="treeGlowBtn">🏡 Treehouse Glow ✨</button>
-        <button id="romanticMsgBtn">💌 Love Letter 💌</button>
-    </div>
-    <div class="instruction">
-        🖱️ Drag to explore | 🌕 Moon & Treehouse | 🪐 Planets of Love
-    </div>
-    <canvas id="confetti-canvas"></canvas>
-
-    <!-- Import Three.js and add-ons -->
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
-            }
-        }
-    </script>
-
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
-
-        // --- setup scene, cameras, renderers ---
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x030318);
-        scene.fog = new THREE.FogExp2(0x030318, 0.0005);
-
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(7, 4.5, 14);
-        camera.lookAt(0, 0, 0);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        document.body.appendChild(renderer.domElement);
-
-        const labelRenderer = new CSS2DRenderer();
-        labelRenderer.setSize(window.innerWidth, window.innerHeight);
-        labelRenderer.domElement.style.position = 'absolute';
-        labelRenderer.domElement.style.top = '0px';
-        labelRenderer.domElement.style.left = '0px';
-        labelRenderer.domElement.style.pointerEvents = 'none';
-        document.body.appendChild(labelRenderer.domElement);
-
-        // --- controls with smoothness ---
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.autoRotate = false;
-        controls.enableZoom = true;
-        controls.enablePan = true;
-        controls.zoomSpeed = 1.2;
-        controls.rotateSpeed = 0.8;
-        
-        // --- LIGHTS: magical atmosphere ---
-        const ambientLight = new THREE.AmbientLight(0x22223b);
-        scene.add(ambientLight);
-        const sunLight = new THREE.DirectionalLight(0xffeedd, 1.3);
-        sunLight.position.set(10, 20, 5);
-        sunLight.castShadow = true;
-        sunLight.receiveShadow = true;
-        sunLight.shadow.mapSize.width = 1024;
-        sunLight.shadow.mapSize.height = 1024;
-        scene.add(sunLight);
-        
-        const fillLight = new THREE.PointLight(0x4a2e6b, 0.6);
-        fillLight.position.set(0, -3, 0);
-        scene.add(fillLight);
-        
-        const rimLight = new THREE.PointLight(0xff7f50, 0.7);
-        rimLight.position.set(-3, 4, -6);
-        scene.add(rimLight);
-        
-        const fairyLight = new THREE.PointLight(0xffaa88, 0.9);
-        fairyLight.position.set(2, 2, 2);
-        scene.add(fairyLight);
-        
-        // Starfield particle system (distant stars)
-        const starGeometry = new THREE.BufferGeometry();
-        const starCount = 2200;
-        const starPositions = new Float32Array(starCount * 3);
-        for (let i = 0; i < starCount; i++) {
-            starPositions[i*3] = (Math.random() - 0.5) * 450;
-            starPositions[i*3+1] = (Math.random() - 0.5) * 240;
-            starPositions[i*3+2] = (Math.random() - 0.5) * 120 - 50;
-        }
-        starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.18, transparent: true, opacity: 0.8 });
-        const stars = new THREE.Points(starGeometry, starMaterial);
-        scene.add(stars);
-        
-        // --- CENTERPIECE: Moon with treehouse ---
-        const moonGeometry = new THREE.SphereGeometry(1.65, 128, 128);
-        const moonMaterial = new THREE.MeshStandardMaterial({
-            color: 0xf9e0b0,
-            emissive: 0x442200,
-            emissiveIntensity: 0.35,
-            roughness: 0.65,
-            metalness: 0.1
-        });
-        const moon = new THREE.Mesh(moonGeometry, moonMaterial);
-        moon.castShadow = true;
-        moon.receiveShadow = false;
-        moon.position.set(0, -0.4, 0);
-        scene.add(moon);
-        
-        // Moon craters
-        const craterMat = new THREE.MeshStandardMaterial({ color: 0xc9ae74, roughness: 0.9 });
-        for (let i = 0; i < 100; i++) {
-            const crater = new THREE.Mesh(new THREE.SphereGeometry(0.07 + Math.random()*0.12, 16), craterMat);
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos(2 * Math.random() - 1);
-            const r = 1.68;
-            crater.position.x = r * Math.sin(phi) * Math.cos(theta);
-            crater.position.y = r * Math.sin(phi) * Math.sin(theta);
-            crater.position.z = r * Math.cos(phi);
-            crater.scale.set(0.6, 0.3, 0.6);
-            moon.add(crater);
-        }
-        
-        // Treehouse Group
-        const treeGroup = new THREE.Group();
-        const trunkMat = new THREE.MeshStandardMaterial({ color: 0x8B5A2B, roughness: 0.5 });
-        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.48, 0.62, 1.25, 8), trunkMat);
-        trunk.position.y = 1.3;
-        trunk.castShadow = true;
-        treeGroup.add(trunk);
-        
-        const leafMat = new THREE.MeshStandardMaterial({ color: 0x6A994E, emissive: 0x2c4c1a, emissiveIntensity: 0.2 });
-        const foliage1 = new THREE.Mesh(new THREE.ConeGeometry(0.75, 0.95, 16), leafMat);
-        foliage1.position.y = 2.0;
-        treeGroup.add(foliage1);
-        const foliage2 = new THREE.Mesh(new THREE.ConeGeometry(0.6, 0.75, 16), leafMat);
-        foliage2.position.y = 2.55;
-        treeGroup.add(foliage2);
-        
-        const cabinMat = new THREE.MeshStandardMaterial({ color: 0xDDB87C, roughness: 0.4 });
-        const cabinBase = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.75, 0.95), cabinMat);
-        cabinBase.position.y = 1.6;
-        cabinBase.castShadow = true;
-        treeGroup.add(cabinBase);
-        
-        const roofMat = new THREE.MeshStandardMaterial({ color: 0xBC6C25 });
-        const roof = new THREE.Mesh(new THREE.ConeGeometry(0.7, 0.6, 4), roofMat);
-        roof.rotation.y = Math.PI/4;
-        roof.position.y = 2.05;
-        treeGroup.add(roof);
-        
-        const windowMat = new THREE.MeshStandardMaterial({ color: 0xFFD966, emissive: 0xffaa33, emissiveIntensity: 0.7 });
-        const windowLight = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.32, 0.1), windowMat);
-        windowLight.position.set(0.48, 1.7, 0.49);
-        treeGroup.add(windowLight);
-        
-        const ladderMat = new THREE.MeshStandardMaterial({ color: 0xAD8E6A });
-        for (let i = 0; i < 3; i++) {
-            const step = new THREE.Mesh(new THREE.BoxGeometry(0.27, 0.05, 0.42), ladderMat);
-            step.position.set(0.55, 1.25 + i * 0.19, 0.73);
-            treeGroup.add(step);
-        }
-        treeGroup.position.set(0, -0.2, 1.25);
-        treeGroup.castShadow = true;
-        moon.add(treeGroup);
-        
-        // Halo
-        const haloMat = new THREE.MeshPhongMaterial({ color: 0xffcc88, transparent: true, opacity: 0.2, side: THREE.BackSide });
-        const halo = new THREE.Mesh(new THREE.SphereGeometry(1.9, 32, 32), haloMat);
-        moon.add(halo);
-        
-        // --- Solar System Planets ---
-        const planetsGroup = new THREE.Group();
-        scene.add(planetsGroup);
-        
-        const planetsData = [
-            { name: "💖 Heartia", radius: 0.29, distance: 3.0, color: 0xff6b8b, speed: 0.008, emissive: 0xaa3355 },
-            { name: "✨ Stardust", radius: 0.25, distance: 4.3, color: 0xaaccff, speed: 0.0055, emissive: 0x336699 },
-            { name: "🌿 Gaia", radius: 0.33, distance: 5.6, color: 0x7cb518, speed: 0.0042, emissive: 0x336622 },
-            { name: "☀️ Lovestar", radius: 0.42, distance: 7.2, color: 0xffaa66, speed: 0.0033, emissive: 0xcc7722 },
-            { name: "🌙 Dreamlet", radius: 0.24, distance: 8.6, color: 0xd9bf77, speed: 0.0026, emissive: 0x886633 }
-        ];
-        
-        const planets = [];
-        planetsData.forEach((data) => {
-            const geometry = new THREE.SphereGeometry(data.radius, 64, 64);
-            const material = new THREE.MeshStandardMaterial({ color: data.color, emissive: data.emissive, emissiveIntensity: 0.25, roughness: 0.4 });
-            const planet = new THREE.Mesh(geometry, material);
-            planet.castShadow = true;
-            planet.userData = { angle: Math.random() * Math.PI * 2, distance: data.distance, speed: data.speed };
-            planetsGroup.add(planet);
-            
-            if (data.name === "✨ Stardust" || data.name === "☀️ Lovestar") {
-                const ringGeo = new THREE.TorusGeometry(data.radius + 0.09, 0.06, 32, 100);
-                const ringMat = new THREE.MeshStandardMaterial({ color: 0xffddaa, emissive: 0xaa8866 });
-                const ring = new THREE.Mesh(ringGeo, ringMat);
-                ring.rotation.x = Math.PI / 2;
-                planet.add(ring);
-            }
-            
-            const div = document.createElement('div');
-            div.textContent = `${data.name}`;
-            div.style.color = '#ffefc0';
-            div.style.fontSize = 'clamp(10px, 3vw, 14px)';
-            div.style.fontWeight = 'bold';
-            div.style.textShadow = '0 0 8px #ff66aa';
-            div.style.background = 'rgba(0,0,0,0.6)';
-            div.style.padding = '2px 10px';
-            div.style.borderRadius = '30px';
-            div.style.backdropFilter = 'blur(4px)';
-            div.style.border = '1px solid rgba(255,200,100,0.8)';
-            const label = new CSS2DObject(div);
-            planet.add(label);
-            label.position.set(0, data.radius + 0.22, 0);
-            planets.push(planet);
-        });
-        
-        // Heart orbs around
-        const heartOrbsGroup = new THREE.Group();
-        scene.add(heartOrbsGroup);
-        const heartMatGlow = new THREE.MeshStandardMaterial({ color: 0xff69b4, emissive: 0xff3399 });
-        for (let i = 0; i < 40; i++) {
-            const orbHeart = new THREE.Mesh(new THREE.SphereGeometry(0.055, 8), heartMatGlow);
-            orbHeart.userData = { angle: (i / 40) * Math.PI * 2, radius: 1.4, speed: 0.012 };
-            heartOrbsGroup.add(orbHeart);
-        }
-        
-        // Sparkle dust particles
-        const dustCount = 700;
-        const dustGeometry = new THREE.BufferGeometry();
-        const dustPositions = new Float32Array(dustCount * 3);
-        for (let i = 0; i < dustCount; i++) {
-            dustPositions[i*3] = (Math.random() - 0.5) * 7;
-            dustPositions[i*3+1] = (Math.random() - 0.5) * 5;
-            dustPositions[i*3+2] = (Math.random() - 0.5) * 7;
-        }
-        dustGeometry.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
-        const dustMat = new THREE.PointsMaterial({ color: 0xffaa99, size: 0.045, transparent: true, blending: THREE.AdditiveBlending });
-        const dustParticles = new THREE.Points(dustGeometry, dustMat);
-        scene.add(dustParticles);
-        
-        // Orbital ring
-        const orbitPoints = [];
-        const orbitRadius = 9.8;
-        const orbitCurve = new THREE.EllipseCurve(0, 0, orbitRadius, orbitRadius, 0, 2 * Math.PI, false, 0);
-        const orbitDivisions = 200;
-        const orbitGeo = new THREE.BufferGeometry();
-        const vertices = [];
-        for (let i = 0; i <= orbitDivisions; i++) {
-            const point = orbitCurve.getPoint(i / orbitDivisions);
-            vertices.push(point.x, 0, point.y);
-        }
-        orbitGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
-        const orbitMatLine = new THREE.LineBasicMaterial({ color: 0xff88bb });
-        const orbitRing = new THREE.LineLoop(orbitGeo, orbitMatLine);
-        scene.add(orbitRing);
-        
-        // Glowing orbs around tree
-        const glowOrbs = [];
-        for (let i=0; i<15; i++) {
-            const orb = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8), new THREE.MeshStandardMaterial({ color: 0xffaa66, emissive: 0xff6644, emissiveIntensity: 0.6 }));
-            orb.userData = { angle: (i/15)*Math.PI*2, radius: 0.95, yOffset: 0.7 + Math.random()*0.6 };
-            treeGroup.add(orb);
-            glowOrbs.push(orb);
-        }
-        
-        // --- Confetti System (Canvas)---
-        const confettiCanvas = document.getElementById('confetti-canvas');
-        let ctx = confettiCanvas.getContext('2d');
-        let particles = [];
-        let animationConfettiId = null;
-        
-        function resizeConfetti() {
-            confettiCanvas.width = window.innerWidth;
-            confettiCanvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeConfetti);
-        resizeConfetti();
-        
-        function startConfetti(duration = 2800) {
-            if (animationConfettiId) cancelAnimationFrame(animationConfettiId);
-            particles = [];
-            const colors = ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#a0e7ff', '#ff9e9e', '#e0bbff', '#ffc0cb', '#ffdab9'];
-            for (let i = 0; i < 220; i++) {
-                particles.push({
                     x: Math.random() * confettiCanvas.width,
                     y: Math.random() * confettiCanvas.height - confettiCanvas.height,
-                    size: Math.random() * 7 + 3,
-                    speedY: Math.random() * 5 + 3,
-                    speedX: (Math.random() - 0.5) * 2.5,
+                    size: Math.random() * 6 + 3,
                     color: colors[Math.floor(Math.random() * colors.length)],
-                    rotation: Math.random() * 360
+                    speedY: Math.random() * 4.5 + 2.5,
+                    speedX: (Math.random() - 0.5) * 1.8,
+                    rotation: Math.random() * 360,
+                    spin: (Math.random() - 0.5) * 6
                 });
             }
-            let startTime = performance.now();
-            function drawConfetti(now) {
-                if (now - startTime > duration) {
-                    ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-                    animationConfettiId = null;
-                    return;
-                }
-                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-                for (let p of particles) {
-                    p.y += p.speedY;
-                    p.x += p.speedX;
-                    if (p.y > confettiCanvas.height) p.y = -10;
-                    if (p.x > confettiCanvas.width) p.x = 0;
-                    if (p.x < 0) p.x = confettiCanvas.width;
-                    ctx.save();
-                    ctx.translate(p.x, p.y);
-                    ctx.rotate(p.rotation * Math.PI / 180);
-                    ctx.fillStyle = p.color;
-                    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size/1.5);
-                    ctx.restore();
-                }
-                animationConfettiId = requestAnimationFrame(drawConfetti);
-            }
-            animationConfettiId = requestAnimationFrame(drawConfetti);
         }
         
-        // --- Interactive Features & Surprises ---
-        document.getElementById('popConfettiBtn').addEventListener('click', () => {
-            startConfetti(3000);
-            windowLight.material.emissiveIntensity = 1.3;
-            setTimeout(() => { if(windowLight.material) windowLight.material.emissiveIntensity = 0.7; }, 900);
-        });
-        
-        let rotateSystem = false;
-        document.getElementById('rotatePlanetsBtn').addEventListener('click', () => {
-            rotateSystem = !rotateSystem;
-            const btn = document.getElementById('rotatePlanetsBtn');
-            if (rotateSystem) {
-                btn.style.background = "radial-gradient(circle at 30% 10%, #5f9ea0, #2c5a6e)";
-                btn.textContent = "🌀 Pause Spin 🌀";
-                orbitRing.material.color.setHex(0xffaacc);
-            } else {
-                btn.style.background = "radial-gradient(circle at 30% 10%, #ff9a5f, #ff4d6d)";
-                btn.textContent = "🌀 Galaxy Spin 🌠";
-                orbitRing.material.color.setHex(0xff88aa);
+        function updateConfetti() {
+            if (!confettiActive) return;
+            ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            let stillAlive = false;
+            for (let i = 0; i < particlesArray.length; i++) {
+                const p = particlesArray[i];
+                p.y += p.speedY;
+                p.x += p.speedX;
+                p.rotation += p.spin;
+                if (p.y < confettiCanvas.height + 50) stillAlive = true;
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotation * Math.PI / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size/1.5);
+                ctx.restore();
             }
-        });
+            particlesArray = particlesArray.filter(p => p.y < confettiCanvas.height + 100);
+            if (particlesArray.length === 0 && confettiActive) {
+                confettiActive = false;
+                if (confettiAnimFrame) cancelAnimationFrame(confettiAnimFrame);
+                return;
+            }
+            confettiAnimFrame = requestAnimationFrame(updateConfetti);
+        }
         
-        document.getElementById('treeGlowBtn').addEventListener('click', () => {
-            const intense = leafMat.emissiveIntensity > 0.25 ? 0.08 : 0.65;
-            leafMat.emissiveIntensity = intense;
-            windowLight.material.emissiveIntensity = intense ? 1.2 : 0.7;
-            fairyLight.intensity = intense ? 1.4 : 0.8;
-            startConfetti(1300);
-        });
-        
-        // Sweet Love Letter Modal (Browser alert but cute)
-        document.getElementById('romanticMsgBtn').addEventListener('click', () => {
-            const msgs = [
-                "💖 You are the moon of my night, the sun of my day, and the entire galaxy of my heart! ✨",
-                "🌙 Every star in the sky wishes it could shine as bright as your smile. Happy Birthday, my love! 🎂",
-                "🏡 Our treehouse of dreams grows stronger with every heartbeat. Love you endlessly! 💕",
-                "🎉 May your year be filled with cosmic joy and infinite cuddles! You are my whole universe!"
-            ];
-            const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
-            alert(`💌 To My Dearest Love 💌\n\n${randomMsg}\n\n❤️ Click anywhere to continue celebrating! ❤️`);
-            startConfetti(2000);
-        });
-        
-        // Photo click surprise: enlarge effect and extra confetti + message
-        const photoDiv = document.getElementById('photoTrigger');
-        photoDiv.addEventListener('click', () => {
-            startConfetti(2800);
-            const noteDiv = document.getElementById('floatingNote');
-            noteDiv.style.transform = "scale(1.05)";
-            noteDiv.style.background = "rgba(255,100,120,0.8)";
-            noteDiv.innerHTML = "💖✨ You just made the stars dance! Love you beyond galaxies! ✨💖";
+        let confettiAnimFrame = null;
+        function startConfetti() {
+            if (confettiActive) {
+                particlesArray = [];
+                confettiActive = false;
+                if (confettiAnimFrame) cancelAnimationFrame(confettiAnimFrame);
+            }
+            particlesArray = [];
+            createConfetti();
+            confettiActive = true;
+            updateConfetti();
             setTimeout(() => {
-                noteDiv.style.background = "rgba(0,0,0,0.6)";
-                noteDiv.innerHTML = "💖 To my starlight: Every moment with you is a cosmic adventure! Click image again for more magic 💖";
+                if (confettiActive) {
+                    setTimeout(() => {
+                        confettiActive = false;
+                        if (confettiAnimFrame) cancelAnimationFrame(confettiAnimFrame);
+                    }, 4500);
+                }
             }, 4000);
-            // also rotate heart group extra
-            heartOrbsGroup.rotation.y += 0.5;
+        }
+        
+        // --- Interactive Buttons ---
+        let planetRotationEnabled = true;
+        const rotateBtn = document.getElementById('rotatePlanetsBtn');
+        rotateBtn.addEventListener('click', () => {
+            planetRotationEnabled = !planetRotationEnabled;
+            rotateBtn.textContent = planetRotationEnabled ? "🌀 Pause Galaxy Dance 🌠" : "🌀 Resume Galaxy Dance 🌠";
+        });
+        
+        document.getElementById('popConfettiBtn').addEventListener('click', () => startConfetti());
+        
+        document.getElementById('romanticMsgBtn').addEventListener('click', () => {
+            const msgDiv = document.createElement('div');
+            msgDiv.textContent = "💖✨ My Dearest Love, you are the brightest star in my universe. Every heartbeat echoes through galaxies because of you. Happy Birthday, my cosmic soulmate! ✨💖";
+            msgDiv.style.position = 'fixed';
+            msgDiv.style.bottom = '30%';
+            msgDiv.style.left = '50%';
+            msgDiv.style.transform = 'translateX(-50%)';
+            msgDiv.style.backgroundColor = 'rgba(0,0,0,0.85)';
+            msgDiv.style.backdropFilter = 'blur(15px)';
+            msgDiv.style.color = '#fff0d0';
+            msgDiv.style.padding = '18px 28px';
+            msgDiv.style.borderRadius = '60px';
+            msgDiv.style.fontSize = 'clamp(0.9rem, 4vw, 1.3rem)';
+            msgDiv.style.fontWeight = 'bold';
+            msgDiv.style.border = '2px solid #ff99aa';
+            msgDiv.style.textAlign = 'center';
+            msgDiv.style.zIndex = '100';
+            msgDiv.style.fontFamily = "'Poppins', sans-serif";
+            msgDiv.style.boxShadow = '0 0 35px rgba(255,80,120,0.7)';
+            document.body.appendChild(msgDiv);
+            setTimeout(() => msgDiv.remove(), 4200);
+            startConfetti();
+        });
+        
+        document.getElementById('twinkleStarsBtn').addEventListener('click', () => {
+            starMaterial.color.setHex(0xffeebb);
+            dustMat.color.setHex(0xffaa88);
+            sparkleMatPoints.color.setHex(0xffccaa);
+            setTimeout(() => {
+                starMaterial.color.setHex(0xffffff);
+                dustMat.color.setHex(0xffbbaa);
+                sparkleMatPoints.color.setHex(0xffdd99);
+            }, 1300);
+            startConfetti();
+        });
+        
+        // Photo surprise love letter
+        document.getElementById('photoTrigger').addEventListener('click', () => {
+            const loveText = document.createElement('div');
+            loveText.innerHTML = "🌹❤️ You are my greatest adventure, my cosmic soulmate. Every second with you is a beautiful constellation. I love you endlessly! ❤️🌹";
+            loveText.style.position = 'fixed';
+            loveText.style.top = '40%';
+            loveText.style.left = '50%';
+            loveText.style.transform = 'translate(-50%, -50%)';
+            loveText.style.background = 'linear-gradient(145deg, #2a1e3c, #1a112b)';
+            loveText.style.color = '#ffebcc';
+            loveText.style.padding = '22px 32px';
+            loveText.style.borderRadius = '48px';
+            loveText.style.border = '2px solid #ffaa88';
+            loveText.style.fontSize = 'clamp(0.9rem, 4vw, 1.3rem)';
+            loveText.style.fontWeight = 'bold';
+            loveText.style.textAlign = 'center';
+            loveText.style.backdropFilter = 'blur(20px)';
+            loveText.style.zIndex = '200';
+            loveText.style.fontFamily = "'Poppins', sans-serif";
+            loveText.style.boxShadow = '0 0 50px rgba(255,80,120,0.8)';
+            loveText.style.width = '80%';
+            loveText.style.maxWidth = '420px';
+            document.body.appendChild(loveText);
+            setTimeout(() => loveText.remove(), 4700);
+            startConfetti();
         });
         
         // --- Animation Loop ---
         let time = 0;
         function animate() {
             requestAnimationFrame(animate);
-            time += 0.016;
+            time += 0.014;
             
-            if (rotateSystem) {
-                planetsGroup.rotation.y += 0.009;
-                orbitRing.rotation.y += 0.0025;
-            } else {
-                planetsGroup.rotation.y += 0.0018;
-                orbitRing.rotation.y += 0.0008;
+            if (planetRotationEnabled) {
+                planets.forEach(planet => {
+                    planet.userData.angle += planet.userData.speed;
+                    const x = Math.cos(planet.userData.angle) * planet.userData.distance;
+                    const z = Math.sin(planet.userData.angle) * planet.userData.distance;
+                    planet.position.set(x, Math.sin(planet.userData.angle * 1.3) * 0.1, z);
+                });
             }
             
-            planets.forEach(planet => {
-                const data = planet.userData;
-                if (data) {
-                    data.angle += rotateSystem ? data.speed * 1.4 : data.speed;
-                    const x = Math.cos(data.angle) * data.distance;
-                    const z = Math.sin(data.angle) * data.distance;
-                    planet.position.set(x, Math.sin(time * 0.9 + data.distance) * 0.12, z);
-                }
+            // orbiting hearts around center
+            orbitingHearts.forEach((heart, idx) => {
+                heart.userData.angle += 0.011;
+                const rad = heart.userData.radius;
+                const ang = heart.userData.angle;
+                heart.position.x = Math.cos(ang) * rad;
+                heart.position.z = Math.sin(ang) * rad;
+                heart.position.y = Math.sin(ang * 2) * 0.4;
             });
             
-            heartOrbsGroup.children.forEach((orb, idx) => {
-                const angle = Date.now() * 0.0035 + idx;
-                orb.position.x = Math.cos(angle) * 1.6;
-                orb.position.z = Math.sin(angle) * 1.6;
-                orb.position.y = Math.sin(angle * 2.2) * 0.4;
+            // heart group around moon
+            heartGroup.children.forEach((heart, i) => {
+                const angle = time * 1.3 + i;
+                const r = 2.15;
+                heart.position.x = Math.cos(angle) * r;
+                heart.position.z = Math.sin(angle) * r;
+                heart.position.y = Math.sin(angle * 1.6) * 0.5;
             });
             
-            glowOrbs.forEach((orb, i) => {
-                const t = Date.now() * 0.0023 + i;
-                orb.position.x = Math.cos(t) * 0.9;
-                orb.position.z = Math.sin(t) * 0.9;
-                orb.position.y = 1.4 + Math.sin(t * 1.8) * 0.25;
-            });
+            dustParticles.rotation.y += 0.002;
+            sparklePoints.rotation.x += 0.001;
+            stars.rotation.y += 0.0003;
             
-            fairyLight.position.x = 2.2 + Math.sin(time) * 1.3;
-            fairyLight.position.z = 1.8 + Math.cos(time * 0.85) * 1.3;
-            dustParticles.rotation.y += 0.0025;
-            dustParticles.rotation.x = Math.sin(time * 0.25) * 0.1;
-            moon.position.y = -0.4 + Math.sin(time * 1.3) * 0.035;
-            stars.rotation.y += 0.0004;
+            // dynamic moon pulse
+            const intensity = 0.35 + Math.sin(time * 2.8) * 0.07;
+            moonMaterial.emissiveIntensity = intensity;
+            fairyGlow.intensity = 0.9 + Math.sin(time * 2.2) * 0.25;
+            colorFillLight.intensity = 0.5 + Math.sin(time * 1.8) * 0.2;
             
             controls.update();
             renderer.render(scene, camera);
@@ -1021,16 +680,18 @@
         }
         
         animate();
-        setTimeout(() => { startConfetti(2200); }, 600);
         
-        window.addEventListener('resize', () => {
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
             labelRenderer.setSize(window.innerWidth, window.innerHeight);
-        });
+            resizeConfettiCanvas();
+        }
         
-        console.log("%c✨✨ Happy Birthday, My Eternal Love! ✨✨", "color: #ff88cc; font-size: 18px; font-weight: bold; background: #000; padding: 6px; border-radius: 20px;");
+        // initial joyful confetti burst on load
+        setTimeout(() => startConfetti(), 500);
     </script>
 </body>
 </html>
