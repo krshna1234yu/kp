@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>✨ Galactic Birthday Wonderland for My Love ✨</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Poppins', 'Segoe UI', 'Arial', sans-serif;
+        }
+
+        /* Sweet Floating UI - fully responsive */
+        .birthday-message {
+            position: absolute;
+            bottom: 5%;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 20;
+            pointer-events: none;
+            text-shadow: 0 0 20px rgba(255, 120, 160, 0.8);
+            animation: floatGlow 3s infinite ease-in-out;
+            padding: 0 20px;
+        }
+
+        .birthday-message h1 {
+            font-size: clamp(1.8rem, 6vw, 3.5rem);
+            background: linear-gradient(135deg, #ffd89b, #ffb7b2, #ff6a88, #ffb347);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 3px;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .birthday-message p {
+            color: #fff5e0;
+            font-size: clamp(0.8rem, 3vw, 1.3rem);
+            margin-top: 10px;
+            font-weight: 500;
+            backdrop-filter: blur(8px);
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 40px;
+            background: rgba(0,0,0,0.3);
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translateY(0px); text-shadow: 0 0 15px #ff99cc; }
+            100% { transform: translateY(-8px); text-shadow: 0 0 30px #ff66aa; }
+        }
+
+        /* Interactive control panel - mobile friendly */
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 30;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-end;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(12px);
+            padding: 12px 18px;
+            border-radius: 60px;
+            border: 1px solid rgba(255,215,150,0.6);
+            pointer-events: auto;
+            max-width: 90vw;
+        }
+
+        button {
+            background: radial-gradient(circle at 30% 10%, #ff9a5f, #ff4d6d);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: clamp(0.7rem, 3vw, 0.9rem);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            transform: scale(1.07);
+            background: radial-gradient(circle at 30% 10%, #ffb347, #ff2e5e);
+            box-shadow: 0 0 12px #ff8c9e;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .instruction {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 30;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            padding: 6px 12px;
+            border-radius: 20px;
+            color: #ffecb3;
+            font-size: clamp(0.6rem, 2.5vw, 0.75rem);
+            font-weight: 300;
+            pointer-events: none;
+            font-family: monospace;
+        }
+
+        /* Confetti canvas layer */
+        #confetti-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 25;
+        }
+
+        /* Custom photo frame floating - responsive image popup */
+        .photo-memory {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 30;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: gentleHover 2s infinite ease-in-out;
+        }
+
+        .photo-frame {
+            background: rgba(255,215,180,0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 6px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3), 0 0 0 3px rgba(255,200,150,0.6);
+            transition: transform 0.3s;
+        }
+
+        .photo-frame img {
+            width: clamp(60px, 15vw, 100px);
+            height: auto;
+            border-radius: 15px;
+            display: block;
+            object-fit: cover;
+            aspect-ratio: 1/1;
+            border: 2px solid #ffddbb;
+        }
+
+        .photo-frame:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 0 3px #ffaa77;
+        }
+
+        @keyframes gentleHover {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Floating Birthday Note */
+        .floating-note {
+            position: absolute;
+            top: 20%;
+            left: 20px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            padding: 12px 18px;
+            border-radius: 20px;
+            max-width: 220px;
+            border-left: 5px solid #ff88aa;
+            color: #fff0cc;
+            font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+            font-weight: 500;
+            pointer-events: none;
+            z-index: 20;
+            animation: fadeSlide 1s ease-out;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (max-width: 600px) {
+            .controls { gap: 6px; padding: 8px 12px; bottom: 12px; right: 12px; }
+            button { padding: 5px 12px; }
+            .floating-note { top: auto; bottom: 80px; left: 12px; max-width: 170px; font-size: 0.7rem; padding: 8px 12px; }
+            .photo-memory { top: 12px; right: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="birthday-message">
+        <h1>🎂 Happy Birthday, My Universe 🎂</h1>
+        <p>🌕 You make my world magical ✨</p>
+    </div>
+    
+    <!-- Image Frame with relative path "Media.jpg" -->
+    <div class="photo-memory" id="photoTrigger">
+        <div class="photo-frame">
+            <img src="Media.jpg" alt="My Love's Memory" onerror="this.src='https://via.placeholder.com/100?text=❤️+Love+❤️'">
+        </div>
+    </div>
+    
+    <div class="floating-note" id="floatingNote">
+        💖 To my starlight: Every moment with you is a cosmic adventure!  
+        Click on the image for a sweet surprise 🌹
+    </div>
+    
+    <div class="controls">
+        <button id="popConfettiBtn">🎉 Sprinkle Magic 🎉</button>
+        <button id="rotatePlanetsBtn">🌀 Galaxy Spin 🌠</button>
+        <button id="treeGlowBtn">🏡 Treehouse Glow ✨</button>
+        <button id="romanticMsgBtn">💌 Love Letter 💌</button>
+    </div>
+    <div class="instruction">
+        🖱️ Drag to explore | 🌕 Moon & Treehouse | 🪐 Planets of Love
+    </div>
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Import Three.js and add-ons -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+        // --- setup scene, cameras, renderers ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x030318);
+        scene.fog = new THREE.FogExp2(0x030318, 0.0005);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(7, 4.5, 14);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.body.appendChild(renderer.domElement);
+
+        const labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '0px';
+        labelRenderer.domElement.style.left = '0px';
+        labelRenderer.domElement.style.pointerEvents = 'none';
+        document.body.appendChild(labelRenderer.domElement);
+
+        // --- controls with smoothness ---
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = false;
+        controls.enableZoom = true;
+        controls.enablePan = true;
+        controls.zoomSpeed = 1.2;
+        controls.rotateSpeed = 0.8;
+        
+        // --- LIGHTS: magical atmosphere ---
+        const ambientLight = new THREE.AmbientLight(0x22223b);
+        scene.add(ambientLight);
+        const sunLight = new THREE.DirectionalLight(0xffeedd, 1.3);
+        sunLight.position.set(10, 20, 5);
+        sunLight.castShadow = true;
+        sunLight.receiveShadow = true;
+        sunLight.shadow.mapSize.width = 1024;
+        sunLight.shadow.mapSize.height = 1024;
+        scene.add(sunLight);
+        
+        const fillLight = new THREE.PointLight(0x4a2e6b, 0.6);
+        fillLight.position.set(0, -3, 0);
+        scene.add(fillLight);
+        
+        const rimLight = new THREE.PointLight(0xff7f50, 0.7);
+        rimLight.position.set(-3, 4, -6);
+        scene.add(rimLight);
+        
+        const fairyLight = new THREE.PointLight(0xffaa88, 0.9);
+        fairyLight.position.set(2, 2, 2);
+        scene.add(fairyLight);
+        
+        // Starfield particle system (distant stars)
+        const starGeometry = new THREE.BufferGeometry();
+        const starCount = 2200;
+        const starPositions = new Float32Array(starCount * 3);
+        for (let i = 0; i < starCount; i++) {
+            starPositions[i*3] = (Math.random() - 0.5) * 450;
+            starPositions[i*3+1] = (Math.random() - 0.5) * 240;
+            starPositions[i*3+2] = (Math.random() - 0.5) * 120 - 50;
+        }
+        starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.18, transparent: true, opacity: 0.8 });
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+        
+        // --- CENTERPIECE: Moon with treehouse ---
+        const moonGeometry = new THREE.SphereGeometry(1.65, 128, 128);
+        const moonMaterial = new THREE.MeshStandardMaterial({
+            color: 0xf9e0b0,
+            emissive: 0x442200,
+            emissiveIntensity: 0.35,
+            roughness: 0.65,
+            metalness: 0.1
+        });
+        const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+        moon.castShadow = true;
+        moon.receiveShadow = false;
+        moon.position.set(0, -0.4, 0);
+        scene.add(moon);
+        
+        // Moon craters
+        const craterMat = new THREE.MeshStandardMaterial({ color: 0xc9ae74, roughness: 0.9 });
+        for (let i = 0; i < 100; i++) {
+            const crater = new THREE.Mesh(new THREE.SphereGeometry(0.07 + Math.random()*0.12, 16), craterMat);
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const r = 1.68;
+            crater.position.x = r * Math.sin(phi) * Math.cos(theta);
+            crater.position.y = r * Math.sin(phi) * Math.sin(theta);
+            crater.position.z = r * Math.cos(phi);
+            crater.scale.set(0.6, 0.3, 0.6);
+            moon.add(crater);
+        }
+        
+        // Treehouse Group
+        const treeGroup = new THREE.Group();
+        const trunkMat = new THREE.MeshStandardMaterial({ color: 0x8B5A2B, roughness: 0.5 });
+        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.48, 0.62, 1.25, 8), trunkMat);
+        trunk.position.y = 1.3;
+        trunk.castShadow = true;
+        treeGroup.add(trunk);
+        
+        const leafMat = new THREE.MeshStandardMaterial({ color: 0x6A994E, emissive: 0x2c4c1a, emissiveIntensity: 0.2 });
+        const foliage1 = new THREE.Mesh(new THREE.ConeGeometry(0.75, 0.95, 16), leafMat);
+        foliage1.position.y = 2.0;
+        treeGroup.add(foliage1);
+        const foliage2 = new THREE.Mesh(new THREE.ConeGeometry(0.6, 0.75, 16), leafMat);
+        foliage2.position.y = 2.55;
+        treeGroup.add(foliage2);
+        
+        const cabinMat = new THREE.MeshStandardMaterial({ color: 0xDDB87C, roughness: 0.4 });
+        const cabinBase = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.75, 0.95), cabinMat);
+        cabinBase.position.y = 1.6;
+        cabinBase.castShadow = true;
+        treeGroup.add(cabinBase);
+        
+        const roofMat = new THREE.MeshStandardMaterial({ color: 0xBC6C25 });
+        const roof = new THREE.Mesh(new THREE.ConeGeometry(0.7, 0.6, 4), roofMat);
+        roof.rotation.y = Math.PI/4;
+        roof.position.y = 2.05;
+        treeGroup.add(roof);
+        
+        const windowMat = new THREE.MeshStandardMaterial({ color: 0xFFD966, emissive: 0xffaa33, emissiveIntensity: 0.7 });
+        const windowLight = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.32, 0.1), windowMat);
+        windowLight.position.set(0.48, 1.7, 0.49);
+        treeGroup.add(windowLight);
+        
+        const ladderMat = new THREE.MeshStandardMaterial({ color: 0xAD8E6A });
+        for (let i = 0; i < 3; i++) {
+            const step = new THREE.Mesh(new THREE.BoxGeometry(0.27, 0.05, 0.42), ladderMat);
+            step.position.set(0.55, 1.25 + i * 0.19, 0.73);
+            treeGroup.add(step);
+        }
+        treeGroup.position.set(0, -0.2, 1.25);
+        treeGroup.castShadow = true;
+        moon.add(treeGroup);
+        
+        // Halo
+        const haloMat = new THREE.MeshPhongMaterial({ color: 0xffcc88, transparent: true, opacity: 0.2, side: THREE.BackSide });
+        const halo = new THREE.Mesh(new THREE.SphereGeometry(1.9, 32, 32), haloMat);
+        moon.add(halo);
+        
+        // --- Solar System Planets ---
+        const planetsGroup = new THREE.Group();
+        scene.add(planetsGroup);
+        
+        const planetsData = [
+            { name: "💖 Heartia", radius: 0.29, distance: 3.0, color: 0xff6b8b, speed: 0.008, emissive: 0xaa3355 },
+            { name: "✨ Stardust", radius: 0.25, distance: 4.3, color: 0xaaccff, speed: 0.0055, emissive: 0x336699 },
+            { name: "🌿 Gaia", radius: 0.33, distance: 5.6, color: 0x7cb518, speed: 0.0042, emissive: 0x336622 },
+            { name: "☀️ Lovestar", radius: 0.42, distance: 7.2, color: 0xffaa66, speed: 0.0033, emissive: 0xcc7722 },
+            { name: "🌙 Dreamlet", radius: 0.24, distance: 8.6, color: 0xd9bf77, speed: 0.0026, emissive: 0x886633 }
+        ];
+        
+        const planets = [];
+        planetsData.forEach((data) => {
+            const geometry = new THREE.SphereGeometry(data.radius, 64, 64);
+            const material = new THREE.MeshStandardMaterial({ color: data.color, emissive: data.emissive, emissiveIntensity: 0.25, roughness: 0.4 });
+            const planet = new THREE.Mesh(geometry, material);
+            planet.castShadow = true;
+            planet.userData = { angle: Math.random() * Math.PI * 2, distance: data.distance, speed: data.speed };
+            planetsGroup.add(planet);
+            
+            if (data.name === "✨ Stardust" || data.name === "☀️ Lovestar") {
+                const ringGeo = new THREE.TorusGeometry(data.radius + 0.09, 0.06, 32, 100);
+                const ringMat = new THREE.MeshStandardMaterial({ color: 0xffddaa, emissive: 0xaa8866 });
+                const ring = new THREE.Mesh(ringGeo, ringMat);
+                ring.rotation.x = Math.PI / 2;
+                planet.add(ring);
+            }
+            
+            const div = document.createElement('div');
+            div.textContent = `${data.name}`;
+            div.style.color = '#ffefc0';
+            div.style.fontSize = 'clamp(10px, 3vw, 14px)';
+            div.style.fontWeight = 'bold';
+            div.style.textShadow = '0 0 8px #ff66aa';
+            div.style.background = 'rgba(0,0,0,0.6)';
+            div.style.padding = '2px 10px';
+            div.style.borderRadius = '30px';
+            div.style.backdropFilter = 'blur(4px)';
+            div.style.border = '1px solid rgba(255,200,100,0.8)';
+            const label = new CSS2DObject(div);
+            planet.add(label);
+            label.position.set(0, data.radius + 0.22, 0);
+            planets.push(planet);
+        });
+        
+        // Heart orbs around
+        const heartOrbsGroup = new THREE.Group();
+        scene.add(heartOrbsGroup);
+        const heartMatGlow = new THREE.MeshStandardMaterial({ color: 0xff69b4, emissive: 0xff3399 });
+        for (let i = 0; i < 40; i++) {
+            const orbHeart = new THREE.Mesh(new THREE.SphereGeometry(0.055, 8), heartMatGlow);
+            orbHeart.userData = { angle: (i / 40) * Math.PI * 2, radius: 1.4, speed: 0.012 };
+            heartOrbsGroup.add(orbHeart);
+        }
+        
+        // Sparkle dust particles
+        const dustCount = 700;
+        const dustGeometry = new THREE.BufferGeometry();
+        const dustPositions = new Float32Array(dustCount * 3);
+        for (let i = 0; i < dustCount; i++) {
+            dustPositions[i*3] = (Math.random() - 0.5) * 7;
+            dustPositions[i*3+1] = (Math.random() - 0.5) * 5;
+            dustPositions[i*3+2] = (Math.random() - 0.5) * 7;
+        }
+        dustGeometry.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
+        const dustMat = new THREE.PointsMaterial({ color: 0xffaa99, size: 0.045, transparent: true, blending: THREE.AdditiveBlending });
+        const dustParticles = new THREE.Points(dustGeometry, dustMat);
+        scene.add(dustParticles);
+        
+        // Orbital ring
+        const orbitPoints = [];
+        const orbitRadius = 9.8;
+        const orbitCurve = new THREE.EllipseCurve(0, 0, orbitRadius, orbitRadius, 0, 2 * Math.PI, false, 0);
+        const orbitDivisions = 200;
+        const orbitGeo = new THREE.BufferGeometry();
+        const vertices = [];
+        for (let i = 0; i <= orbitDivisions; i++) {
+            const point = orbitCurve.getPoint(i / orbitDivisions);
+            vertices.push(point.x, 0, point.y);
+        }
+        orbitGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
+        const orbitMatLine = new THREE.LineBasicMaterial({ color: 0xff88bb });
+        const orbitRing = new THREE.LineLoop(orbitGeo, orbitMatLine);
+        scene.add(orbitRing);
+        
+        // Glowing orbs around tree
+        const glowOrbs = [];
+        for (let i=0; i<15; i++) {
+            const orb = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8), new THREE.MeshStandardMaterial({ color: 0xffaa66, emissive: 0xff6644, emissiveIntensity: 0.6 }));
+            orb.userData = { angle: (i/15)*Math.PI*2, radius: 0.95, yOffset: 0.7 + Math.random()*0.6 };
+            treeGroup.add(orb);
+            glowOrbs.push(orb);
+        }
+        
+        // --- Confetti System (Canvas)---
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        let ctx = confettiCanvas.getContext('2d');
+        let particles = [];
+        let animationConfettiId = null;
+        
+        function resizeConfetti() {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeConfetti);
+        resizeConfetti();
+        
+        function startConfetti(duration = 2800) {
+            if (animationConfettiId) cancelAnimationFrame(animationConfettiId);
+            particles = [];
+            const colors = ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#a0e7ff', '#ff9e9e', '#e0bbff', '#ffc0cb', '#ffdab9'];
+            for (let i = 0; i < 220; i++) {
+                particles.push({
+                    x: Math.random() * confettiCanvas.width,
+                    y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+                    size: Math.random() * 7 + 3,
+                    speedY: Math.random() * 5 + 3,
+                    speedX: (Math.random() - 0.5) * 2.5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * 360
+                });
+            }
+            let startTime = performance.now();
+            function drawConfetti(now) {
+                if (now - startTime > duration) {
+                    ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                    animationConfettiId = null;
+                    return;
+                }
+                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                for (let p of particles) {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    if (p.y > confettiCanvas.height) p.y = -10;
+                    if (p.x > confettiCanvas.width) p.x = 0;
+                    if (p.x < 0) p.x = confettiCanvas.width;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rotation * Math.PI / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size/1.5);
+                    ctx.restore();
+                }
+                animationConfettiId = requestAnimationFrame(drawConfetti);
+            }
+            animationConfettiId = requestAnimationFrame(drawConfetti);
+        }
+        
+        // --- Interactive Features & Surprises ---
+        document.getElementById('popConfettiBtn').addEventListener('click', () => {
+            startConfetti(3000);
+            windowLight.material.emissiveIntensity = 1.3;
+            setTimeout(() => { if(windowLight.material) windowLight.material.emissiveIntensity = 0.7; }, 900);
+        });
+        
+        let rotateSystem = false;
+        document.getElementById('rotatePlanetsBtn').addEventListener('click', () => {
+            rotateSystem = !rotateSystem;
+            const btn = document.getElementById('rotatePlanetsBtn');
+            if (rotateSystem) {
+                btn.style.background = "radial-gradient(circle at 30% 10%, #5f9ea0, #2c5a6e)";
+                btn.textContent = "🌀 Pause Spin 🌀";
+                orbitRing.material.color.setHex(0xffaacc);
+            } else {
+                btn.style.background = "radial-gradient(circle at 30% 10%, #ff9a5f, #ff4d6d)";
+                btn.textContent = "🌀 Galaxy Spin 🌠";
+                orbitRing.material.color.setHex(0xff88aa);
+            }
+        });
+        
+        document.getElementById('treeGlowBtn').addEventListener('click', () => {
+            const intense = leafMat.emissiveIntensity > 0.25 ? 0.08 : 0.65;
+            leafMat.emissiveIntensity = intense;
+            windowLight.material.emissiveIntensity = intense ? 1.2 : 0.7;
+            fairyLight.intensity = intense ? 1.4 : 0.8;
+            startConfetti(1300);
+        });
+        
+        // Sweet Love Letter Modal (Browser alert but cute)
+        document.getElementById('romanticMsgBtn').addEventListener('click', () => {
+            const msgs = [
+                "💖 You are the moon of my night, the sun of my day, and the entire galaxy of my heart! ✨",
+                "🌙 Every star in the sky wishes it could shine as bright as your smile. Happy Birthday, my love! 🎂",
+                "🏡 Our treehouse of dreams grows stronger with every heartbeat. Love you endlessly! 💕",
+                "🎉 May your year be filled with cosmic joy and infinite cuddles! You are my whole universe!"
+            ];
+            const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
+            alert(`💌 To My Dearest Love 💌\n\n${randomMsg}\n\n❤️ Click anywhere to continue celebrating! ❤️`);
+            startConfetti(2000);
+        });
+        
+        // Photo click surprise: enlarge effect and extra confetti + message
+        const photoDiv = document.getElementById('photoTrigger');
+        photoDiv.addEventListener('click', () => {
+            startConfetti(2800);
+            const noteDiv = document.getElementById('floatingNote');
+            noteDiv.style.transform = "scale(1.05)";
+            noteDiv.style.background = "rgba(255,100,120,0.8)";
+            noteDiv.innerHTML = "💖✨ You just made the stars dance! Love you beyond galaxies! ✨💖";
+            setTimeout(() => {
+                noteDiv.style.background = "rgba(0,0,0,0.6)";
+                noteDiv.innerHTML = "💖 To my starlight: Every moment with you is a cosmic adventure! Click image again for more magic 💖";
+            }, 4000);
+            // also rotate heart group extra
+            heartOrbsGroup.rotation.y += 0.5;
+        });
+        
+        // --- Animation Loop ---
+        let time = 0;
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.016;
+            
+            if (rotateSystem) {
+                planetsGroup.rotation.y += 0.009;
+                orbitRing.rotation.y += 0.0025;
+            } else {
+                planetsGroup.rotation.y += 0.0018;
+                orbitRing.rotation.y += 0.0008;
+            }
+            
+            planets.forEach(planet => {
+                const data = planet.userData;
+                if (data) {
+                    data.angle += rotateSystem ? data.speed * 1.4 : data.speed;
+                    const x = Math.cos(data.angle) * data.distance;
+                    const z = Math.sin(data.angle) * data.distance;
+                    planet.position.set(x, Math.sin(time * 0.9 + data.distance) * 0.12, z);
+                }
+            });
+            
+            heartOrbsGroup.children.forEach((orb, idx) => {
+                const angle = Date.now() * 0.0035 + idx;
+                orb.position.x = Math.cos(angle) * 1.6;
+                orb.position.z = Math.sin(angle) * 1.6;
+                orb.position.y = Math.sin(angle * 2.2) * 0.4;
+            });
+            
+            glowOrbs.forEach((orb, i) => {
+                const t = Date.now() * 0.0023 + i;
+                orb.position.x = Math.cos(t) * 0.9;
+                orb.position.z = Math.sin(t) * 0.9;
+                orb.position.y = 1.4 + Math.sin(t * 1.8) * 0.25;
+            });
+            
+            fairyLight.position.x = 2.2 + Math.sin(time) * 1.3;
+            fairyLight.position.z = 1.8 + Math.cos(time * 0.85) * 1.3;
+            dustParticles.rotation.y += 0.0025;
+            dustParticles.rotation.x = Math.sin(time * 0.25) * 0.1;
+            moon.position.y = -0.4 + Math.sin(time * 1.3) * 0.035;
+            stars.rotation.y += 0.0004;
+            
+            controls.update();
+            renderer.render(scene, camera);
+            labelRenderer.render(scene, camera);
+        }
+        
+        animate();
+        setTimeout(() => { startConfetti(2200); }, 600);
+        
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        console.log("%c✨✨ Happy Birthday, My Eternal Love! ✨✨", "color: #ff88cc; font-size: 18px; font-weight: bold; background: #000; padding: 6px; border-radius: 20px;");
+    </script>
+</body>
+</html>
